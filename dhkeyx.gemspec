@@ -11,8 +11,8 @@ Gem::Specification.new do |spec|
   spec.summary               = %q{An implementation of the Diffie Hellman key exchange protocol}
   spec.description           = %q{}
   spec.platform              = Gem::Platform::RUBY
-  spec.required_ruby_version = '=> 1.9.2'
-  spec.homepage              = ""
+  spec.required_ruby_version = '>= 1.9.2'
+  spec.homepage              = "https://github.com/jfrazx/dhkeyx"
   spec.license               = "MIT"
 
   spec.files                 = Dir.glob("ext/**/*.{c,rb}") + Dir.glob("lib/**/*.rb")
