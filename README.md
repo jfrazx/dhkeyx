@@ -16,24 +16,33 @@ This is a fork of: https://rubygems.org/gems/dhkeyexchange for Ruby >= 1.9.2.
 ```
   require 'dhkeyx'
 
-  dh = DHKey.new([base], [prime], [private_key])
+  #DHKey.new([base], [prime], [private_key])
 
-  dh.base
-  => "6521178014511969166738152222198510777"
+  bob = DHKey.new
 
- # Better documentation to follow...
+  alice = DHKey.new(bob.base, bob.prime)
+
+  bob.their_public_key = alice.x
+  alice.y              = bob.my_public_key
+
+  bob.shared_key == alice.k
+  => true
+
+  bob.private_key == alice.a
+  => false
 
 ```
 
-### METHODS 
+### METHODS => ALIAS
   'base=' => 'g='
   
   'prime=' => 'p='
   
   'private_key=' => 'a='
   
-  'their_public_key' => 'y='
+  'their_public_key=' => 'y='
 
+   ----
 
   'base' => 'g'
   
