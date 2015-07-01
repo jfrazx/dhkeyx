@@ -65,11 +65,6 @@ static VALUE rb_DH_key_initialize(VALUE self, VALUE args);
 	def_c_set_attr(their_public_key)
 void dh_DHKey_free(struct dh_DHKey* key);
 
-
-// redefines the obsolete STR2CSTR
-#define STR2CSTR(x) rb_str2cstr((VALUE)(x),0)
-
-
 void Init_dhkeyx() {
   rb_cDHKey = rb_define_class("DHKey", rb_cObject);
   rb_define_singleton_method(rb_cDHKey, "new", rb_DH_key_new, -2);
@@ -174,7 +169,8 @@ static VALUE rb_DH_key_set_base(VALUE self, VALUE v) {
 	struct dh_DHKey * ptr; Data_Get_Struct(self, struct dh_DHKey, ptr);
 	if (NIL_P(v) == 0) {
 		if (rb_respond_to(v, rb_intern("to_s")) != 0) {
-			BN_dec2bn(&(ptr->base), STR2CSTR(rb_funcall(v, rb_intern("to_s"), 0)));
+			VALUE str = rb_funcall( v, rb_intern("to_s"), 0);
+			BN_dec2bn( &(ptr->base), StringValueCStr( str ));
 		} else {
 			rb_raise(rb_eRuntimeError, "%s must respond to 'to_s'", "base");
 			return Qnil;
@@ -198,7 +194,8 @@ static VALUE rb_DH_key_set_prime(VALUE self, VALUE v) {
 	struct dh_DHKey * ptr; Data_Get_Struct(self, struct dh_DHKey, ptr);
 	if (NIL_P(v) == 0) {
 		if (rb_respond_to(v, rb_intern("to_s")) != 0) {
-			BN_dec2bn(&(ptr->prime), STR2CSTR(rb_funcall(v, rb_intern("to_s"), 0)));
+			VALUE str = rb_funcall(v, rb_intern("to_s"), 0);
+			BN_dec2bn(&(ptr->prime), StringValueCStr( str ));
 		} else {
 			rb_raise(rb_eRuntimeError, "%s must respond to 'to_s'", "prime");
 			return Qnil;
@@ -221,7 +218,8 @@ static VALUE rb_DH_key_set_private_key(VALUE self, VALUE v) {
 	struct dh_DHKey * ptr; Data_Get_Struct(self, struct dh_DHKey, ptr);
 	if (NIL_P(v) == 0) {
 		if (rb_respond_to(v, rb_intern("to_s")) != 0) {
-			BN_dec2bn(&(ptr->private_key), STR2CSTR(rb_funcall(v, rb_intern("to_s"), 0)));
+			VALUE str = rb_funcall(v, rb_intern("to_s"), 0);
+			BN_dec2bn(&(ptr->private_key), StringValueCStr( str ));
 		} else {
 			rb_raise(rb_eRuntimeError, "%s must respond to 'to_s'", "private_key");
 			return Qnil;
@@ -245,7 +243,8 @@ static VALUE rb_DH_key_set_their_public_key(VALUE self, VALUE v) {
 	struct dh_DHKey * ptr; Data_Get_Struct(self, struct dh_DHKey, ptr);
 	if (NIL_P(v) == 0) {
 		if (rb_respond_to(v, rb_intern("to_s")) != 0) {
-			BN_dec2bn(&(ptr->their_public_key), STR2CSTR(rb_funcall(v, rb_intern("to_s"), 0)));
+			VALUE str = rb_funcall(v, rb_intern("to_s"), 0);
+			BN_dec2bn(&(ptr->their_public_key), StringValueCStr( str ));
 		} else {
 			rb_raise(rb_eRuntimeError, "%s must respond to 'to_s'", "their_public_key");
 			return Qnil;
